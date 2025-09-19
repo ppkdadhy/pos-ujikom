@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\products;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -24,7 +25,8 @@ class TransactionController extends Controller
         $countToday = Order::whereDate('created_at', $today)->count() + 1;
         $orderCode = 'ORD-' . date('Ymd') . '-' . str_pad($countToday, 4, '0', STR_PAD_LEFT);
         $statusOrder = "Order";
-        return view('kasir.transaksi.create', compact('today', 'orderCode', 'statusOrder'));
+        $products = products::all();
+        return view('kasir.transaksi.create', compact('today', 'orderCode', 'statusOrder', 'products'));
     }
 
     /**
