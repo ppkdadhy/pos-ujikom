@@ -5,7 +5,7 @@
             <div class="card-title">Create Transaction</div>
         </div>
         <div class="card-body">
-            <form action="" method="post">
+            <form action="{{ route('transaction.store') }}" method="post">
                 @csrf
                 <div class="row">
                     <div class="col-6">
@@ -98,6 +98,34 @@
                     let selectOpt = e.target.options[e.target.selectedIndex];
                     let order_price = e.target.closest("tr").querySelector(".order_price");
                     order_price.value = selectOpt.getAttribute("data-price");
+                    orderSubtotal();
+                }
+            });
+
+            function orderSubtotal() {
+                let grandTotal = 0;
+                const rows = dataTransactions.querySelectorAll("tr");
+
+                rows.forEach(row => {
+                    const qtyInpt = row.querySelector('.qty');
+                    const priceInpt = row.querySelector('.order_price');
+                    const order_subtotal = row.querySelector('.order_subtotal');
+
+                    const price = parseFloat(priceInpt.value) || 0;
+                    const qty = parseInt(qtyInpt.value) || 0;
+                    const subtotal = price * qty;
+
+                    order_subtotal.value = subtotal;
+                    // grandTotal += subtotal;
+
+                });
+            }
+            dataTransactions.addEventListener('input', function(e) {
+                if (e.target.classList.contains('qty')) {
+                    if (e.target.value < 0) {
+                        e.target.value = 0;
+                    }
+                    orderSubtotal();
                 }
             });
         });

@@ -17,15 +17,20 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
+                    @php
+                        $no = 1;
+                    @endphp
+                    @foreach ($orders as $item)
+                        <tbody>
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td> <a href="{{ route('transaction.show', $item->id) }}">{{ $item->order_code }}</a></td>
+                                <td>{{ $item->order_amount == null ? '-' : $item->order_amount }}</td>
+                                <td>{{ $item->order_status == 0 ? 'Order' : 'Paid in Full' }}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    @endforeach
                 </table>
             </div>
         </div>
